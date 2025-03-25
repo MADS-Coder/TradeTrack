@@ -10,8 +10,8 @@ class RepositorioVenda:
         self.db = db
 
     def vender_produtos(self, venda: schemas.Venda):
-        db_venda = models.Venda(código_do_produto=venda.código_do_produto, nome_do_produto=venda.nome_do_produto,
-                                preço_do_produto=venda.preço_do_produto, quantidade_do_produto=venda.quantidade_do_produto,
+        db_venda = models.Venda(venda_codigo_do_produto=venda.venda_codigo_do_produto, nome_do_produto=venda.nome_do_produto,
+                                preco_do_produto=venda.preco_do_produto, quantidade_do_produto=venda.quantidade_do_produto,
                                 tipo_de_pagamento=venda.tipo_de_pagamento, nome_do_cliente=venda.nome_do_cliente)
 
         self.db.add(db_venda)
