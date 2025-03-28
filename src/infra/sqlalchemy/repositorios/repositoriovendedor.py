@@ -22,5 +22,19 @@ class RepositorioVendedor():
         vendedores = self.db.execute(listar_vendedores).scalars().all()
         return vendedores
 
-    def remover_vendedor(self):
-        ...
+    def remover_vendedor(self, usuario_do_vendedor):
+        # Cria uma consulta no banco de dados para a tabela 'Vendedor'
+        vendedor = self.db.query(models.Vendedor).filter(
+            models.Vendedor.usuario_do_vendedor == usuario_do_vendedor).first()
+
+        # Verifica se um vendedor foi encontrado
+        if vendedor:
+            # Se o vendedor existir, remove ele do banco de dados
+            self.db.delete(vendedor)
+            # Confirma a operação de exclusão no banco de dados
+            self.db.commit()
+
+            # Acessa o nome do vendedor deletado
+            return {'Mensagem': f'O vendedor {vendedor.usuario_do_vendedor} foi removido com sucesso!'}
+
+        return {'Mensagem': f'Vendedor {usuario_do_vendedor} não encontrado!.'}

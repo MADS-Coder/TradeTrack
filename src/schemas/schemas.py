@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 
 
 class Vendedor(BaseModel):
@@ -19,15 +19,12 @@ class VendedorSimples(BaseModel):
         orm_mode = True  # Permite converter objetos ORM para JSON
 
 
-class Venda(BaseModel):
-    id: Optional[int] = None
+class CriarVenda(BaseModel):
     venda_codigo_do_produto: int
-    nome_do_produto: str
-    preco_do_produto: float
-    quantidade_do_produto: int
     tipo_de_pagamento: str
     nome_do_cliente: str
     id_vendedor: int
+    quantidade_vendida: int  # Nova chave para a quantidade vendida
 
     class Config:
         orm_mode = True  # Permite converter objetos ORM para JSON
@@ -43,7 +40,7 @@ class VendaSimples(BaseModel):
     vendedor: Optional[VendedorSimples] = None  # Relacionamento com Vendedor
 
     class Config:
-        orm_mode = True
+        orm_mode = True  # Permite converter objetos ORM para JSON
 
 
 class ProdutoSimples(BaseModel):
@@ -55,7 +52,7 @@ class ProdutoSimples(BaseModel):
     detalhes_do_produto: str
 
     class Config:
-        orm_mode = True
+        orm_mode = True  # Permite converter objetos ORM para JSON
 
 
 class Produtos(BaseModel):

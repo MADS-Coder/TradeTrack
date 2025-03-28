@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
@@ -10,6 +11,17 @@ class RepositorioProduto:
         self.db = db
 
     def criar_produto(self, produto: schemas.Produtos):
+        # Verifica se já existe um produto com o mesmo código no banco
+        produto_existente = self.db.query(models.Produtos).filter(
+            models.Produtos.codigo_do_produto == produto.codigo_do_produto).first()
+
+        if produto_existente:
+            raise HTTPException(
+                status_code=400,
+                detail=f'O código {produto.codigo_do_produto} já está cadastrado para outro produto!'
+            )
+        
+        # Se não existir, cadastra o novo produto
         db_produto = models.Produtos(codigo_do_produto=produto.codigo_do_produto, nome_do_produto=produto.nome_do_produto,
                                      preco_do_produto=produto.preco_do_produto, quantidade_do_produto=produto.quantidade_do_produto,
                                      detalhes_do_produto=produto.detalhes_do_produto, produto_disponivel=produto.produto_disponivel)
@@ -18,11 +30,13 @@ class RepositorioProduto:
         self.db.refresh(db_produto)
         return db_produto
 
+
     def listar_produtos(self):
         listar_produtos = select(models.Produtos)  # Consulta
         # Executa a consulta e extrai os valores das colunas
         produtos = self.db.execute(listar_produtos).scalars().all()
         return produtos
+
 
     def editar_produto(self, id: int, produto: schemas.Produtos):
         # UPDATE - Cria uma instrução de atualização para a tabela 'Produtos'
