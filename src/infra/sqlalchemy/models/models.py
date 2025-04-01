@@ -47,7 +47,8 @@ class Vendedor(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     usuario_do_vendedor = Column(String)
+    matricula = Column(String)
     senha = Column(String)
 
     # Relacionamento com Vendas (Um para muitos)
-    vendas = relationship('Venda', back_populates='vendedor')
+    vendas = relationship('Venda', back_populates='vendedor') # Venda realizada pelo vendedor.

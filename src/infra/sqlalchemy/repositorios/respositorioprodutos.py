@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
@@ -59,14 +59,16 @@ class RepositorioProduto:
         produto = self.db.query(models.Produtos).filter(
             models.Produtos.codigo_do_produto == codigo_do_produto).first()
 
-        # Verifica se um produto foi encontrado
-        if produto:
-            # Se o produto existir, remove ele do banco de dados
-            self.db.delete(produto)
-            # Confirma a operação de exclusão no banco de dados
-            self.db.commit()
+        if not produto:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f'{codigo_do_produto} do produto não localizado!.'
+            )
+    
+        # Se o produto existir, remove ele do banco de dados
+        self.db.delete(produto)
+        # Confirma a operação de exclusão no banco de dados
+        self.db.commit()
 
-            # Acessa o nome do produto deletado
-            return {'Mensagem': f'Produto {produto.nome_do_produto} removido com sucesso!'}
-
-        return {'Mensagem': f'Código {codigo_do_produto} não encontrado!.'}
+        # Acessa o nome do produto deletado
+        return {'Mensagem': f'Produto {produto.nome_do_produto} removido com sucesso!'}

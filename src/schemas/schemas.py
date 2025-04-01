@@ -5,6 +5,7 @@ from typing import Optional
 class Vendedor(BaseModel):
     id: Optional[int] = None
     usuario_do_vendedor: str
+    matricula: str
     senha: str
 
     class Config:
@@ -14,6 +15,7 @@ class Vendedor(BaseModel):
 class VendedorSimples(BaseModel):
     id: Optional[int] = None
     usuario_do_vendedor: str
+    matricula: str
 
     class Config:
         orm_mode = True  # Permite converter objetos ORM para JSON
@@ -66,3 +68,14 @@ class Produtos(BaseModel):
 
     class Config:
         orm_mode = True  # Permite converter objetos ORM para JSON
+
+
+class LoginData(BaseModel):
+    senha: str
+    matricula: str
+
+
+class LoginSucesso(BaseModel):
+    usuario: VendedorSimples
+    access_token: str
+

@@ -35,7 +35,4 @@ def atualizar_produto(codigo_do_produto: int, produto: Produtos, db: Session = D
 @router.delete('/produto/{codigo_do_produto}')
 def remover_produto(codigo_do_produto: int, db: Session = Depends(get_db)):
     deletar_produto = RepositorioProduto(db).deletar_produto(codigo_do_produto)
-    if not deletar_produto:
-        raise HTTPException(
-            status_code=404, detail=f'{codigo_do_produto} do produto não localizado!.')
     return deletar_produto

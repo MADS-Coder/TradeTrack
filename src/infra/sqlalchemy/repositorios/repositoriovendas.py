@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
@@ -71,20 +71,23 @@ class RepositorioVenda:
 
         # Retorna a lista de vendas encontradas
         return resultado
+    
 
     def remover_vendas(self, venda_codigo_do_produto):
         # Cria uma consulta no banco de dados para a tabela 'Vendas'
         venda = self.db.query(models.Venda).filter(
             models.Venda.venda_codigo_do_produto == venda_codigo_do_produto).first()
 
-        # Verifica se uma venda foi encontrado
-        if venda:
-            # Se a venda existir, remove ela do banco de dados
-            self.db.delete(venda)
-            # Confirma a operação de exclusão no banco de dados
-            self.db.commit()
+        if not venda:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f'Codigo {venda} não encontrado!'
+            )
+    
+        # Se o vendedor existir, remove ele do banco de dados
+        self.db.delete(venda)
+        # Confirma a operação de exclusão no banco de dados
+        self.db.commit()
 
-            # Acessa o nome do produto deletado
-            return {'Mensagem': f'A venda do produto de (Código {venda_codigo_do_produto} - {venda.nome_do_produto}) foi removida com sucesso!'}
-
-        return {'Mensagem': f'O código {venda_codigo_do_produto} do produto da venda não foi encontrado!.'}
+        # Retorna uma mensagem indicando sucesso na exclusão
+        return {'Mensagem': f'A venda do produto de (Código {venda_codigo_do_produto} - {venda.nome_do_produto}) foi removida com sucesso!'}

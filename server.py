@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.routers import routerprodutos, routervendas, routervendedor
+from src.routers import routerprodutos, routervendas, routervendedores, routerauth
 
 app = FastAPI()
 
@@ -22,4 +22,7 @@ app.include_router(routervendas.router)
 app.include_router(routerprodutos.router)
 
 # Rotas VENDEDORES
-app.include_router(routervendedor.router)
+app.include_router(routervendedores.router)
+
+# Rotas SEGURANÇA: Autenticação e Autorização
+app.include_router(routerauth.router, prefix="/auth")
