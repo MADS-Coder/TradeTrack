@@ -1,10 +1,10 @@
-FROM bitname/python:3.13.2
+FROM bitnami/python:3.13.2
 WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.tx
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
-CMD python -m uvicorn src.server:app --host 0.0.0.0 --port 8000 --reload
+CMD python -m uvicorn src.server:app --host 0.0.0.0 --port 8000 --reload --reload-dir=src
 
