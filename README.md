@@ -6,6 +6,10 @@
 
 O projeto foi desenvolvido para demonstrar habilidades em desenvolvimento backend, incluindo boas práticas como separação de responsabilidades, uso de ORM, criação de testes e implementação de autenticação JWT.
 
+Além disso, foi criado um arquivo `requirements.txt` para facilitar a instalação das dependências do projeto, bem como um `Dockerfile` para possibilitar a criação de containers da aplicação. O deploy foi realizado na plataforma **Render**, com autenticação via GitHub, permitindo integração contínua e facilidade na atualização da API.
+
+**Segue o link:** `https://tradetrack-gg9g.onrender.com/docs`
+
 ⚙️ **Tecnologias Utilizadas**
 
 - **Python**: Linguagem principal do projeto.
